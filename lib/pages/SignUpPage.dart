@@ -231,6 +231,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                   print("before it");
 
                                   print("after it");
+                                  FirebaseFirestore.instance.collection(auth.currentUser.uid).doc("userdata").set(
+                                      {
+                                        "age":"Enter Age",
+                                        "gender":"Enter Gender"
+                                      });
 
 
                                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> Mainpage()));

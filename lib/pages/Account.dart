@@ -53,7 +53,8 @@ class _AccountState extends State<Account> {
   FToast fToast;
   Icon icon;
   Color color;
-  String ourfile ;
+  String ourfile;
+  String chd;
 
 
   var myFormat = DateFormat('d-MM-yyyy');
@@ -73,11 +74,7 @@ class _AccountState extends State<Account> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
-    FirebaseFirestore.instance.collection(user.uid).doc("userdata").set(
-        {
-          "age":"Enter Age",
-          "gender":"Enter Gender"
-        });
+
   }
 
   DateTime dateToday = DateTime(DateTime
@@ -351,8 +348,28 @@ class _AccountState extends State<Account> {
               pw.SizedBox(
                   height: 10
               ),
-              pw.Center(
-                  child: pw.Text("*these reading are based on the values taken periodically",style: pw.TextStyle(fontSize: 8))
+              pw.Container(
+                //height: 20,
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
+                    children: <pw.Widget>[
+                      pw.Text("Coronary Heart Disease",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
+                      pw.SizedBox(
+                          width: 5
+                      ),
+                      pw.Text(":"),
+                      pw.SizedBox(
+                          width: 5
+                      ),
+                      pw.Text("${chd}"),
+                    ]
+                ),
+              ),
+              pw.SizedBox(
+                  height: 10
+              ),
+              pw.Divider(
+                  thickness: 1
               ),
 
 
@@ -677,8 +694,10 @@ class _AccountState extends State<Account> {
                               cholesterolavg=cholesterolavg+doc["cholesterol"];
                               oxygensaturationavg=oxygensaturationavg+doc["oxygensaturation"];
                               count++;
-                              print("Body Temperature: $bodytemperatureavg");
-                              print("Count: $count");
+                              // print("Body Temperature: $bodytemperatureavg");
+                              // print("Count: $count");
+                              // chd=doc["chdprediction"];
+                              // print(doc["chdprediction"]);
 
                             }),
 
@@ -701,6 +720,7 @@ class _AccountState extends State<Account> {
 
                             }
                           });
+
                           age=snapshot.data["age"];
                           gender=snapshot.data["gender"].toString().toUpperCase();
                           emailToast("Sending Health Report");

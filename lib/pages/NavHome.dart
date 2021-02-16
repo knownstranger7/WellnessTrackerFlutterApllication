@@ -24,6 +24,9 @@ class NavHome extends StatefulWidget {
 
 class _NavHomeState extends State<NavHome> {
   final HttpService httpService = HttpService();
+  final PredictService predictService = PredictService();
+  final BlockchainService blockchainService = BlockchainService();
+
   final firestoreInstance = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final user = FirebaseAuth.instance.currentUser;
@@ -45,6 +48,8 @@ class _NavHomeState extends State<NavHome> {
 
   Icon icon;
   Color color;
+
+  String chd;
 
   @override
   void initState() {
@@ -79,6 +84,7 @@ class _NavHomeState extends State<NavHome> {
               "heartrate": wellness.heartRate,
               "cholesterol": wellness.cholesterol,
               "oxygensaturation": wellness.oxygenSaturation,
+              "chdprediction":chd,
 
             }).then((value) {
           print(value.id);
@@ -347,8 +353,28 @@ class _NavHomeState extends State<NavHome> {
               pw.SizedBox(
                   height: 10
               ),
-              pw.Center(
-                  child: pw.Text("*these reading are based on the values taken periodically",style: pw.TextStyle(fontSize: 8))
+              pw.Container(
+                //height: 20,
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
+                    children: <pw.Widget>[
+                      pw.Text("Coronary Heart Disease",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
+                      pw.SizedBox(
+                          width: 5
+                      ),
+                      pw.Text(":"),
+                      pw.SizedBox(
+                          width: 5
+                      ),
+                      pw.Text(chd),
+                    ]
+                ),
+              ),
+              pw.SizedBox(
+                  height: 10
+              ),
+              pw.Divider(
+                  thickness: 1
               ),
 
 
@@ -377,10 +403,10 @@ class _NavHomeState extends State<NavHome> {
               if (snapshot.hasData) {
                 var wellness = snapshot.data;
                 getdataperiodic(wellness);
-                _timer = new Timer.periodic(Duration(seconds: 10), (timer) {
+                _timer = new Timer.periodic(Duration(seconds: 30), (timer) {
                   print("Inside Timer");
                   print("Hour: ${DateTime.now().hour} Minute: ${DateTime.now().minute}");
-                  if (DateTime.now().hour == 23 && DateTime.now().minute == 59) {
+                  if (DateTime.now().hour == 15 && DateTime.now().minute == 48) {
                     countermail++;
                     print("CounterMail: $countermail");
 
@@ -644,6 +670,229 @@ class _NavHomeState extends State<NavHome> {
                               ),
                             ]),
                           ),
+                          SizedBox(height: 10,),
+                          Text(
+                            'montoring',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontFamily: 'ShareTechMono',
+                            ),
+                          ),
+                          Text(
+                            'Risk Factors',
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.black,
+                                fontFamily: 'ShareTechMono',
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10,),
+                          FutureBuilder(
+                              future: predictService.getPrediction(wellness.bloodPressure, wellness.cholesterol, wellness.heartRate),
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  var prediction = snapshot.data;
+                                  chd = prediction.chd.toString();
+
+                                  return Card(
+                                    clipBehavior: Clip.antiAlias,
+                                    color: Colors.black54,
+                                    child: Column(children: [
+                                      ListTile(
+                                        leading: Icon(
+                                          Icons.warning_rounded, color: Colors.white,
+                                          size: 33,),
+                                        title: const Text('Coronary Heart Disease',
+                                            style: TextStyle(color: Colors.white)),
+                                        subtitle: Text(
+                                          prediction.chd.toString(),
+                                          style: TextStyle(color: Colors.white54),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                                      ),
+                                    ]),
+                                  );
+                                }
+                                return Center(child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+                                ));
+                              }),
+                          SizedBox(height: 10,),
+                          Text(
+                            'retrieving',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontFamily: 'ShareTechMono',
+                            ),
+                          ),
+                          Text(
+                            'Blockchain Data',
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.black,
+                                fontFamily: 'ShareTechMono',
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10,),
+                          FutureBuilder(
+                              future: blockchainService.getBlockchain(),
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  var blockchain = snapshot.data;
+
+                                  return Column(
+                                    children: [
+                                      Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        color: Colors.black54,
+                                        child: Column(children: [
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.arrow_forward_ios, color: Colors.white,
+                                              size: 33,),
+                                            title: const Text('Average Body Temperature',
+                                                style: TextStyle(color: Colors.white)),
+                                            subtitle: Text(
+                                              blockchain.bodytemperature.toString(),
+                                              style: TextStyle(color: Colors.white54),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                                          ),
+                                        ]),
+                                      ),
+                                      Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        color: Colors.black54,
+                                        child: Column(children: [
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.arrow_forward_ios, color: Colors.white,
+                                              size: 33,),
+                                            title: const Text('Average Blood Pressure',
+                                                style: TextStyle(color: Colors.white)),
+                                            subtitle: Text(
+                                              blockchain.bloodpressure.toString(),
+                                              style: TextStyle(color: Colors.white54),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                                          ),
+                                        ]),
+                                      ),
+                                      Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        color: Colors.black54,
+                                        child: Column(children: [
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.arrow_forward_ios, color: Colors.white,
+                                              size: 33,),
+                                            title: const Text('Average Respiration',
+                                                style: TextStyle(color: Colors.white)),
+                                            subtitle: Text(
+                                              blockchain.respiration.toString(),
+                                              style: TextStyle(color: Colors.white54),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                                          ),
+                                        ]),
+                                      ),
+                                      Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        color: Colors.black54,
+                                        child: Column(children: [
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.arrow_forward_ios, color: Colors.white,
+                                              size: 33,),
+                                            title: const Text('Average Glucose',
+                                                style: TextStyle(color: Colors.white)),
+                                            subtitle: Text(
+                                              blockchain.glucose.toString(),
+                                              style: TextStyle(color: Colors.white54),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                                          ),
+                                        ]),
+                                      ),
+                                      Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        color: Colors.black54,
+                                        child: Column(children: [
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.arrow_forward_ios, color: Colors.white,
+                                              size: 33,),
+                                            title: const Text('Average Heart Rate',
+                                                style: TextStyle(color: Colors.white)),
+                                            subtitle: Text(
+                                              blockchain.heartrate.toString(),
+                                              style: TextStyle(color: Colors.white54),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                                          ),
+                                        ]),
+                                      ),
+                                      Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        color: Colors.black54,
+                                        child: Column(children: [
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.arrow_forward_ios, color: Colors.white,
+                                              size: 33,),
+                                            title: const Text('Average Cholesterol',
+                                                style: TextStyle(color: Colors.white)),
+                                            subtitle: Text(
+                                              blockchain.cholesterol.toString(),
+                                              style: TextStyle(color: Colors.white54),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                                          ),
+                                        ]),
+                                      ),
+                                      Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        color: Colors.black54,
+                                        child: Column(children: [
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.arrow_forward_ios, color: Colors.white,
+                                              size: 33,),
+                                            title: const Text('Average Oxygen Saturation',
+                                                style: TextStyle(color: Colors.white)),
+                                            subtitle: Text(
+                                              blockchain.oxygensaturation.toString(),
+                                              style: TextStyle(color: Colors.white54),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                                          ),
+                                        ]),
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return Center(child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+                                ));
+                              }),
                         ],
                       ),
                     ),
