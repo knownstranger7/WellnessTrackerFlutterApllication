@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "183574799383",
+    "project_id": "wellnesstracker-df88b",
+    "storage_bucket": "wellnesstracker-df88b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183574799383:android:b4df039088c0a847892852",
+        "android_client_info": {
+          "package_name": "com.example.wellnesstracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183574799383-v5tachai3m6oe7v5gnsjb0t29vs92igp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wellnesstracker",
+            "certificate_hash": "b3dff564c05f7dffb859b6de5aaf3c235bd932e4"
+          }
+        },
+        {
+          "client_id": "183574799383-qi7n3nsuvbee62mjaif40ui68gn46plr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9dn23347joAEI4l2OjuZBpOaA6GbVRFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183574799383-qi7n3nsuvbee62mjaif40ui68gn46plr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

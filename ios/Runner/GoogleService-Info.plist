@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>21172642624-965ij12mudu340pn8v9icrsua20r3glr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.21172642624-965ij12mudu340pn8v9icrsua20r3glr</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAyMfuZz_6YZevGGo3QyryIHpJVtMmJM6Q</string>
+	<key>GCM_SENDER_ID</key>
+	<string>21172642624</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.wellnesstracker</string>
+	<key>PROJECT_ID</key>
+	<string>wellness-tracker-c4f82</string>
+	<key>STORAGE_BUCKET</key>
+	<string>wellness-tracker-c4f82.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:21172642624:ios:5b5005e227520c030e10a5</string>
+</dict>
+</plist>
